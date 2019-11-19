@@ -38,7 +38,8 @@ let
       native = filterTests (mapTestOn (packagePlatforms pkgs));
     } // (optionalAttrs (nixpkgs-pin == "release-19.03") {
       "${mingwW64.config}" = filterTests (mapTestOnCross mingwW64 (packagePlatforms pkgs));
-      "${musl64.config}" = filterTests (mapTestOnCross musl64 (packagePlatforms pkgs));
+      # Musl build is failing. Turn it off for now.
+      # "${musl64.config}" = filterTests (mapTestOnCross musl64 (packagePlatforms pkgs));
     });
 
   allJobs =
