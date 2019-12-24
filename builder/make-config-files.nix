@@ -33,9 +33,9 @@ let
   '';
 
   catGhcPkgExactDep = p: ''
-    if [ -e ${ghc.exactDeps}/${p} ]; then
-      cat ${ghc.exactDeps}/${p}/configure-flags >> $out/configure-flags
-      cat ${ghc.exactDeps}/${p}/cabal.config >> $out/cabal.config
+    if [ -e ${ghc}/exactDeps/${p} ]; then
+      cat ${ghc}/exactDeps/${p}/configure-flags >> $out/configure-flags
+      cat ${ghc}/exactDeps/${p}/cabal.config >> $out/cabal.config
     fi
   '';
 
@@ -44,8 +44,8 @@ let
   '';
 
   catGhcPkgEnvDep = p: ''
-    if [ -e ${ghc.envDeps}/${p} ]; then
-      cat ${ghc.envDeps}/${p} >> $out/ghc-environment
+    if [ -e ${ghc}/envDeps/${p} ]; then
+      cat ${ghc}/envDeps/${p} >> $out/ghc-environment
     fi
   '';
 
@@ -58,7 +58,7 @@ in { identifier, component, fullName, flags ? {} }:
         in lib.concatStringsSep "\" \"" xs;
       libs     = lib.concatMapStringsSep "\" \"" (p: "${p}") libDeps;
   in
-  runCommand "${fullName}-config" { nativeBuildInputs = [ghc]; } (''
+  runCommand "${ghc.targetPrefix}${fullName}-config" { nativeBuildInputs = [ghc]; } (''
     mkdir -p $out
 
     ${target-pkg} init $out/package.conf.d
